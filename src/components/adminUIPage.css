@@ -1,0 +1,36 @@
+.admin-page-layout {
+  margin: 0.5rem;
+}
+
+.searchBarLayout {
+  width: 100%;
+}
+
+.searchBar {
+  width: 100%;
+  border: 1px lightgray solid;
+  padding: 0.5rem;
+}
+
+.table-layout {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: scroll;
+}
+
+table,
+th,
+td {
+  padding: 1rem;
+  border-bottom: 2px rgb(230, 222, 222) solid;
+  border-collapse: collapse;
+}
+
+.checkbox-size {
+  width: 1rem;
+  height: 1rem;
+}

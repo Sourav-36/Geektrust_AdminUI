@@ -1,0 +1,14 @@
+.text-align {
+  text-align: center;
+  /* background-color: grey; */
+}
+
+.icons-spacing {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.delete-icon {
+  color: red;
+  cursor: pointer;
+}
