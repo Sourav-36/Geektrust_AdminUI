@@ -1,5 +1,5 @@
 import "./adminUIPage.css";
-import TableList from "./tableList.js";
+import TableList from "./tablelist.js";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Pagination from "./pagination.js";
@@ -46,7 +46,6 @@ const AdminPage = (props) => {
 
               return null;
             });
-            // console.log(searchFilter);
             let newMatchedList = [];
             searchFilter.forEach((obj) => {
               if (obj !== null) {
@@ -82,11 +81,38 @@ const AdminPage = (props) => {
                   <TableList
                     key={data.id}
                     tableData={data}
+                    handleEditRow={(e) => {
+                      let tableElement = document.querySelector(
+                        `#table-${e.target.id}`
+                      );
+                      if (tableElement !== null) {
+                        let name = tableElement.children[1].innerHTML;
+                        let email = tableElement.children[2].innerHTML;
+                        let role = tableElement.children[3].innerHTML;
+
+                        tableElement.children[1].innerHTML = `<input type="text" id="name_text" value="${name}">`;
+                        tableElement.children[2].innerHTML = `<input type="text" id="email_text" value="${email}">`;
+                        tableElement.children[3].innerHTML = `<input type="text" id="role_text" value="${role}">`;
+                      }
+                    }}
+                    handleSaveRow={(e) => {
+                      let new_name = document.getElementById(`name_text`).value;
+                      let new_email =
+                        document.getElementById(`email_text`).value;
+                      let new_role = document.getElementById(`role_text`).value;
+
+                      document.getElementById(`name-${e.target.id}`).innerHTML =
+                        new_name;
+                      document.getElementById(
+                        `email-${e.target.id}`
+                      ).innerHTML = new_email;
+                      document.getElementById(`role-${e.target.id}`).innerHTML =
+                        new_role;
+                    }}
                     handleDeletedRow={(e) => {
                       let tableElement = document.querySelector(
                         `#table-${e.target.id}`
                       );
-                      console.log(tableElement);
                       if (tableElement !== null) tableElement.remove();
                     }}
                     deleteRowsList={deletedRowList}

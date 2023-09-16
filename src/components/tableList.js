@@ -1,13 +1,18 @@
-import "./tableList.css";
+import "./tablelist.css";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import CheckIcon from "@mui/icons-material/Check";
+import { useState } from "react";
 
 const TableList = ({
   tableData,
+  handleEditRow,
+  handleSaveRow,
   handleDeletedRow,
   deleteRowsList,
   setDeletedRows,
 }) => {
+  let [showEditButton, setShowEditButton] = useState(true);
   return (
     <tr id={`table-${tableData.id}`}>
       <td className="text-align">
@@ -23,8 +28,9 @@ const TableList = ({
 
             if (checkBoxElement.checked === true) {
               newList.push(idVal);
-              document.querySelector(`#table-${idVal}`).style =
-                "background-color: grey;";
+              document
+                .querySelector(`#table-${idVal}`)
+                .setAttribute("style", "background-color: grey;");
             } else {
               let ind = newList.indexOf(idVal);
               newList.splice(ind, 1);
@@ -37,12 +43,35 @@ const TableList = ({
           }}
         ></input>
       </td>
-      <td className="text-align">{tableData.name}</td>
-      <td className="text-align">{tableData.email}</td>
-      <td className="text-align">{tableData.role}</td>
+      <td className="text-align" id={`name-${tableData.id}`}>
+        {tableData.name}
+      </td>
+      <td className="text-align" id={`email-${tableData.id}`}>
+        {tableData.email}
+      </td>
+      <td className="text-align" id={`role-${tableData.id}`}>
+        {tableData.role}
+      </td>
       <td className="text-align">
         <div className="icons-spacing">
-          <ModeEditOutlineOutlinedIcon />
+          {showEditButton && (
+            <ModeEditOutlineOutlinedIcon
+              id={tableData.id}
+              onClick={(e) => {
+                setShowEditButton(false);
+                handleEditRow(e);
+              }}
+            />
+          )}
+          {!showEditButton && (
+            <CheckIcon
+              id={tableData.id}
+              onClick={(e) => {
+                handleSaveRow(e);
+                setShowEditButton(true);
+              }}
+            />
+          )}
           <DeleteOutlinedIcon
             id={tableData.id}
             className="delete-icon"
