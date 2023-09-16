@@ -43,15 +43,19 @@ const TableList = ({
           }}
         ></input>
       </td>
+
       <td className="text-align" id={`name-${tableData.id}`}>
         {tableData.name}
       </td>
+
       <td className="text-align" id={`email-${tableData.id}`}>
         {tableData.email}
       </td>
+
       <td className="text-align" id={`role-${tableData.id}`}>
         {tableData.role}
       </td>
+
       <td className="text-align">
         <div className="icons-spacing">
           {showEditButton && (

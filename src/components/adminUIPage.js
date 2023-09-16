@@ -7,8 +7,9 @@ import Pagination from "./pagination.js";
 const AdminPage = (props) => {
   let [originalDataList, setOriginalDataList] = useState([]);
   let [dataList, setDataList] = useState([]);
-  let [deletedRowList, setDeletedRowList] = useState([]);
   let [searchVal, setSearchVal] = useState("");
+  let [deletedRowList, setDeletedRowList] = useState([]);
+
   useEffect(() => {
     (async () => {
       let jsonResponse = await fetchData();
@@ -66,6 +67,36 @@ const AdminPage = (props) => {
                   type="checkbox"
                   id="checkbox-0"
                   className="checkbox-size"
+                  onClick={(e) => {
+                    let rootCheckbox = document.querySelector(`#checkbox-0`);
+                    let newList = [];
+                    if (rootCheckbox.checked) {
+                      dataList.forEach((obj) => {
+                        let checkBoxElement = document.querySelector(
+                          `#checkbox-${obj.id}`
+                        );
+                        checkBoxElement.checked = true;
+                        document
+                          .querySelector(`#table-${obj.id}`)
+                          .setAttribute("style", "background-color: grey;");
+                        newList.push(obj.id);
+                      });
+                    } else {
+                      dataList.forEach((obj) => {
+                        let checkBoxElement = document.querySelector(
+                          `#checkbox-${obj.id}`
+                        );
+                        checkBoxElement.checked = false;
+                        document
+                          .querySelector(`#table-${obj.id}`)
+                          .removeAttribute("style");
+                        let ind = newList.indexOf(obj.id);
+                        newList.splice(ind, 1);
+                      });
+                    }
+
+                    setDeletedRowList(newList);
+                  }}
                 ></input>
               </th>
               <th>Name</th>
@@ -108,12 +139,32 @@ const AdminPage = (props) => {
                       ).innerHTML = new_email;
                       document.getElementById(`role-${e.target.id}`).innerHTML =
                         new_role;
+
+                      let newList = [];
+                      dataList.forEach((obj) => {
+                        if (obj.id === e.target.id) {
+                          newList.push({
+                            id: e.target.id,
+                            name: new_name,
+                            email: new_email,
+                            role: new_role,
+                          });
+                        } else {
+                          newList.push(obj);
+                        }
+                      });
+                      setDataList(newList);
+                      setOriginalDataList(newList);
                     }}
                     handleDeletedRow={(e) => {
-                      let tableElement = document.querySelector(
-                        `#table-${e.target.id}`
-                      );
-                      if (tableElement !== null) tableElement.remove();
+                      let newList = [];
+                      dataList.forEach((obj) => {
+                        if (obj.id !== e.target.id) {
+                          newList.push(obj);
+                        }
+                      });
+                      setDataList(newList);
+                      setOriginalDataList(newList);
                     }}
                     deleteRowsList={deletedRowList}
                     setDeletedRows={setDeletedRowList}
@@ -126,10 +177,18 @@ const AdminPage = (props) => {
 
       <Pagination
         handleDeletedClick={() => {
-          deletedRowList.forEach((id) => {
-            let tableElement = document.querySelector(`#table-${id}`);
-            if (tableElement !== null) tableElement.remove();
+          let newList = [];
+          dataList.forEach((obj) => {
+            if (!deletedRowList.includes(obj.id)) {
+              newList.push(obj);
+            }
           });
+
+          if (document.querySelector(`#checkbox-0`).checked)
+            document.querySelector(`#checkbox-0`).checked = false;
+
+          setDataList(newList);
+          setOriginalDataList(newList);
         }}
       />
     </div>
