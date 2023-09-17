@@ -9,13 +9,16 @@ const AdminPage = (props) => {
   let [searchVal, setSearchVal] = useState("");
   let [deletedRowList, setDeletedRowList] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      let jsonResponse = await fetchData();
-      setDataList(jsonResponse);
-      setOriginalDataList(jsonResponse);
-    })();
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [totalItems, setTotalItems] = useState(0);
+  const [paginatedData, setPaginatedData] = useState([]);
+
+  const paginateData = (data, page, perPage) => {
+    const startIndex = (page - 1) * perPage;
+    const endIndex = startIndex + perPage;
+    return data.slice(startIndex, endIndex);
+  };
 
   const fetchData = async () => {
     let response = await fetch(
@@ -24,9 +27,22 @@ const AdminPage = (props) => {
     return response.json();
   };
 
+  useEffect(() => {
+    (async () => {
+      let jsonResponse = await fetchData();
+      setDataList(jsonResponse);
+      setTotalItems(jsonResponse.length);
+      setOriginalDataList(jsonResponse);
+    })();
+  }, []);
+
+  useEffect(() => {
+    const newData = paginateData(dataList, currentPage, itemsPerPage);
+    setPaginatedData(newData);
+  }, [currentPage, dataList]);
+
   return (
     <div className="admin-page-layout">
-      {/* Searchbar */}
       <div className="searchBarLayout">
         <input
           type="text"
@@ -53,6 +69,8 @@ const AdminPage = (props) => {
               }
             });
             setDataList(newMatchedList);
+            setCurrentPage(1);
+            setTotalItems(newMatchedList.length);
           }}
         />
       </div>
@@ -70,7 +88,7 @@ const AdminPage = (props) => {
                     let rootCheckbox = document.querySelector(`#checkbox-0`);
                     let newList = [];
                     if (rootCheckbox.checked) {
-                      dataList.forEach((obj) => {
+                      paginatedData.forEach((obj) => {
                         let checkBoxElement = document.querySelector(
                           `#checkbox-${obj.id}`
                         );
@@ -81,7 +99,7 @@ const AdminPage = (props) => {
                         newList.push(obj.id);
                       });
                     } else {
-                      dataList.forEach((obj) => {
+                      paginatedData.forEach((obj) => {
                         let checkBoxElement = document.querySelector(
                           `#checkbox-${obj.id}`
                         );
@@ -105,8 +123,8 @@ const AdminPage = (props) => {
             </tr>
           </thead>
           <tbody>
-            {dataList.length !== 0 &&
-              dataList.map((data) => {
+            {paginatedData.length !== 0 &&
+              paginatedData.map((data) => {
                 return (
                   <TableList
                     key={data.id}
@@ -153,7 +171,9 @@ const AdminPage = (props) => {
                         }
                       });
                       setDataList(newList);
+                      setCurrentPage(1);
                       setOriginalDataList(newList);
+                      setTotalItems(newList.length);
                     }}
                     handleDeletedRow={(e) => {
                       let newList = [];
@@ -163,7 +183,9 @@ const AdminPage = (props) => {
                         }
                       });
                       setDataList(newList);
+                      setCurrentPage(1);
                       setOriginalDataList(newList);
+                      setTotalItems(newList.length);
                     }}
                     deleteRowsList={deletedRowList}
                     setDeletedRows={setDeletedRowList}
@@ -187,9 +209,15 @@ const AdminPage = (props) => {
             document.querySelector(`#checkbox-0`).checked = false;
 
           setDataList(newList);
+          setCurrentPage(1);
           setOriginalDataList(newList);
+          setTotalItems(newList.length);
         }}
-        data={dataList}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        paginatedData={dataList}
+        totalItems={totalItems}
+        itemsPerPage={itemsPerPage}
       />
     </div>
   );

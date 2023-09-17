@@ -61,6 +61,7 @@ const TableList = ({
           {showEditButton && (
             <ModeEditOutlineOutlinedIcon
               id={tableData.id}
+              className="edit-cursor"
               onClick={(e) => {
                 setShowEditButton(false);
                 handleEditRow(e);
@@ -70,6 +71,7 @@ const TableList = ({
           {!showEditButton && (
             <CheckIcon
               id={tableData.id}
+              className="set-cursor"
               onClick={(e) => {
                 handleSaveRow(e);
                 setShowEditButton(true);

@@ -1,14 +1,18 @@
 import "./footer.css";
 
-const Footer = ({ handleDeletedClick, data }) => {
-  let showButtons = (datalist) => {
-    let noOfData = 10;
-    let noOfPages = Math.ceil(datalist.length / noOfData);
-    let buttonsValue = [];
+const Footer = ({
+  handleDeletedClick,
+  currentPage,
+  setCurrentPage,
+  totalItems,
+  itemsPerPage,
+}) => {
+  const showButtons = (totalItems, itemsPerPage) => {
+    const noOfPages = Math.ceil(totalItems / itemsPerPage);
+    const buttonsValue = [];
     for (let i = 1; i <= noOfPages; i++) {
       buttonsValue.push(i);
     }
-
     return buttonsValue;
   };
 
@@ -25,18 +29,61 @@ const Footer = ({ handleDeletedClick, data }) => {
       </div>
 
       <div className="page-button-layout" id="pagination-container">
-        <button className="page-button">First</button>
-        <button className="page-button">Prev</button>
-        {showButtons(data).length !== 0 &&
-          showButtons(data).map((val) => {
-            return (
-              <button key={val} className="page-button" id={`button-${val}`}>
-                {val}
-              </button>
-            );
-          })}
-        <button className="page-button">Next</button>
-        <button className="page-button">Last</button>
+        <button
+          className="page-button"
+          onClick={() => {
+            if (document.querySelector(`#checkbox-0`).checked)
+              document.querySelector(`#checkbox-0`).checked = false;
+            setCurrentPage(1);
+          }}
+        >
+          First
+        </button>
+        <button
+          className="page-button"
+          onClick={() => {
+            if (document.querySelector(`#checkbox-0`).checked)
+              document.querySelector(`#checkbox-0`).checked = false;
+            setCurrentPage(currentPage - 1);
+          }}
+          disabled={currentPage === 1}
+        >
+          Prev
+        </button>
+        {showButtons(totalItems, itemsPerPage).map((val) => (
+          <button
+            key={val}
+            className={`page-button ${val === currentPage ? "active" : ""}`}
+            onClick={() => {
+              if (document.querySelector(`#checkbox-0`).checked)
+                document.querySelector(`#checkbox-0`).checked = false;
+              setCurrentPage(val);
+            }}
+          >
+            {val}
+          </button>
+        ))}
+        <button
+          className="page-button"
+          onClick={() => {
+            if (document.querySelector(`#checkbox-0`).checked)
+              document.querySelector(`#checkbox-0`).checked = false;
+            setCurrentPage(currentPage + 1);
+          }}
+          disabled={currentPage === Math.ceil(totalItems / itemsPerPage)}
+        >
+          Next
+        </button>
+        <button
+          className="page-button"
+          onClick={() => {
+            if (document.querySelector(`#checkbox-0`).checked)
+              document.querySelector(`#checkbox-0`).checked = false;
+            setCurrentPage(Math.ceil(totalItems / itemsPerPage));
+          }}
+        >
+          Last
+        </button>
       </div>
     </div>
   );
