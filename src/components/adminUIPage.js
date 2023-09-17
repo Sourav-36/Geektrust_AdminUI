@@ -1,8 +1,7 @@
 import "./adminUIPage.css";
 import TableList from "./tablelist.js";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import Pagination from "./pagination.js";
+import Footer from "./footer.js";
 
 const AdminPage = (props) => {
   let [originalDataList, setOriginalDataList] = useState([]);
@@ -19,10 +18,10 @@ const AdminPage = (props) => {
   }, []);
 
   const fetchData = async () => {
-    let response = await axios.get(
+    let response = await fetch(
       "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json"
     );
-    return response.data;
+    return response.json();
   };
 
   return (
@@ -175,7 +174,7 @@ const AdminPage = (props) => {
         </table>
       </div>
 
-      <Pagination
+      <Footer
         handleDeletedClick={() => {
           let newList = [];
           dataList.forEach((obj) => {
@@ -190,6 +189,7 @@ const AdminPage = (props) => {
           setDataList(newList);
           setOriginalDataList(newList);
         }}
+        dataList={dataList}
       />
     </div>
   );
