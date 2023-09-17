@@ -1,9 +1,9 @@
 import "./footer.css";
 
-const Footer = ({ handleDeletedClick, dataList }) => {
-  let showButtons = (data) => {
+const Footer = ({ handleDeletedClick, data }) => {
+  let showButtons = (datalist) => {
     let noOfData = 10;
-    let noOfPages = Math.ceil(data.length / noOfData);
+    let noOfPages = Math.ceil(datalist.length / noOfData);
     let buttonsValue = [];
     for (let i = 1; i <= noOfPages; i++) {
       buttonsValue.push(i);
@@ -27,8 +27,8 @@ const Footer = ({ handleDeletedClick, dataList }) => {
       <div className="page-button-layout" id="pagination-container">
         <button className="page-button">First</button>
         <button className="page-button">Prev</button>
-        {showButtons(dataList).length !== 0 &&
-          showButtons(dataList).map((val) => {
+        {showButtons(data).length !== 0 &&
+          showButtons(data).map((val) => {
             return (
               <button key={val} className="page-button" id={`button-${val}`}>
                 {val}

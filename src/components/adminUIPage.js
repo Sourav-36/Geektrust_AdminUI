@@ -189,7 +189,7 @@ const AdminPage = (props) => {
           setDataList(newList);
           setOriginalDataList(newList);
         }}
-        dataList={dataList}
+        data={dataList}
       />
     </div>
   );
