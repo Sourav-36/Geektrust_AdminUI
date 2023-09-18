@@ -8,14 +8,19 @@
 }
 
 .delete-icon {
-  color: red;
+  font-weight: 700;
   cursor: pointer;
+  padding: 0.5rem;
 }
 
-.edit-cursor {
+.edit-icon {
+  font-weight: 700;
   cursor: pointer;
+  padding: 0.5rem;
 }
 
-.set-cursor {
+.set-icon {
+  font-weight: 700;
   cursor: pointer;
+  padding: 0.5rem;
 }

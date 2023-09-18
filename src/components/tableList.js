@@ -1,7 +1,4 @@
 import "./tablelist.css";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
 
 const TableList = ({
@@ -61,12 +58,11 @@ const TableList = ({
       <td className="text-align">
         <div className="icons-spacing">
           {showEditButton && (
-            <ModeEditOutlineOutlinedIcon
+            <button
               id={tableData.id}
-              className="edit-cursor"
+              className="edit-icon"
               onClick={(e) => {
                 setShowEditButton(false);
-                // handleEditRow(e);
                 let tableElement = document.querySelector(
                   `#table-${e.target.id}`
                 );
@@ -80,14 +76,15 @@ const TableList = ({
                   tableElement.children[3].innerHTML = `<input type="text" id="role_text" value="${role}">`;
                 }
               }}
-            />
+            >
+              Edit
+            </button>
           )}
           {!showEditButton && (
-            <CheckIcon
+            <button
               id={tableData.id}
-              className="set-cursor"
+              className="set-icon"
               onClick={(e) => {
-                // handleSaveRow(e);
                 let new_name = document.getElementById(`name_text`).value;
                 let new_email = document.getElementById(`email_text`).value;
                 let new_role = document.getElementById(`role_text`).value;
@@ -118,9 +115,11 @@ const TableList = ({
                 setTotalItems(newList.length);
                 setShowEditButton(true);
               }}
-            />
+            >
+              OK
+            </button>
           )}
-          <DeleteOutlinedIcon
+          <button
             id={tableData.id}
             className="delete-icon"
             onClick={(e) => {
@@ -135,7 +134,9 @@ const TableList = ({
               setOriginalDataList(newList);
               setTotalItems(newList.length);
             }}
-          />
+          >
+            Delete
+          </button>
         </div>
       </td>
     </tr>
