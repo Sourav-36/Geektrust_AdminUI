@@ -1,10 +1,6 @@
 # Geektrust_AdminUI
 
-Geektrust challenge statement
-
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Geektrust challenge problem statement of Admin UI using HTML, CSS, Javascript and React.
 
 ## Available Scripts
 
