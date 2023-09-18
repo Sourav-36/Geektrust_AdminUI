@@ -1,9 +1,9 @@
 import "./adminUIPage.css";
 import TableList from "./tablelist.js";
-import { useState, useEffect } from "react";
 import Footer from "./footer.js";
+import { useState, useEffect } from "react";
 
-const AdminPage = (props) => {
+const AdminPage = () => {
   let [originalDataList, setOriginalDataList] = useState([]);
   let [dataList, setDataList] = useState([]);
   let [searchVal, setSearchVal] = useState("");
@@ -43,7 +43,7 @@ const AdminPage = (props) => {
 
   return (
     <div className="admin-page-layout">
-      <div className="searchBarLayout">
+      <div className="searchbar-layout">
         <input
           type="text"
           placeholder="Search by name, email or role"
@@ -129,64 +129,11 @@ const AdminPage = (props) => {
                   <TableList
                     key={data.id}
                     tableData={data}
-                    handleEditRow={(e) => {
-                      let tableElement = document.querySelector(
-                        `#table-${e.target.id}`
-                      );
-                      if (tableElement !== null) {
-                        let name = tableElement.children[1].innerHTML;
-                        let email = tableElement.children[2].innerHTML;
-                        let role = tableElement.children[3].innerHTML;
-
-                        tableElement.children[1].innerHTML = `<input type="text" id="name_text" value="${name}">`;
-                        tableElement.children[2].innerHTML = `<input type="text" id="email_text" value="${email}">`;
-                        tableElement.children[3].innerHTML = `<input type="text" id="role_text" value="${role}">`;
-                      }
-                    }}
-                    handleSaveRow={(e) => {
-                      let new_name = document.getElementById(`name_text`).value;
-                      let new_email =
-                        document.getElementById(`email_text`).value;
-                      let new_role = document.getElementById(`role_text`).value;
-
-                      document.getElementById(`name-${e.target.id}`).innerHTML =
-                        new_name;
-                      document.getElementById(
-                        `email-${e.target.id}`
-                      ).innerHTML = new_email;
-                      document.getElementById(`role-${e.target.id}`).innerHTML =
-                        new_role;
-
-                      let newList = [];
-                      dataList.forEach((obj) => {
-                        if (obj.id === e.target.id) {
-                          newList.push({
-                            id: e.target.id,
-                            name: new_name,
-                            email: new_email,
-                            role: new_role,
-                          });
-                        } else {
-                          newList.push(obj);
-                        }
-                      });
-                      setDataList(newList);
-                      setCurrentPage(1);
-                      setOriginalDataList(newList);
-                      setTotalItems(newList.length);
-                    }}
-                    handleDeletedRow={(e) => {
-                      let newList = [];
-                      dataList.forEach((obj) => {
-                        if (obj.id !== e.target.id) {
-                          newList.push(obj);
-                        }
-                      });
-                      setDataList(newList);
-                      setCurrentPage(1);
-                      setOriginalDataList(newList);
-                      setTotalItems(newList.length);
-                    }}
+                    dataList={dataList}
+                    setDataList={setDataList}
+                    setOriginalDataList={setOriginalDataList}
+                    setCurrentPage={setCurrentPage}
+                    setTotalItems={setTotalItems}
                     deleteRowsList={deletedRowList}
                     setDeletedRows={setDeletedRowList}
                   />
@@ -196,29 +143,20 @@ const AdminPage = (props) => {
         </table>
       </div>
 
-      <Footer
-        handleDeletedClick={() => {
-          let newList = [];
-          dataList.forEach((obj) => {
-            if (!deletedRowList.includes(obj.id)) {
-              newList.push(obj);
-            }
-          });
-
-          if (document.querySelector(`#checkbox-0`).checked)
-            document.querySelector(`#checkbox-0`).checked = false;
-
-          setDataList(newList);
-          setCurrentPage(1);
-          setOriginalDataList(newList);
-          setTotalItems(newList.length);
-        }}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        paginatedData={dataList}
-        totalItems={totalItems}
-        itemsPerPage={itemsPerPage}
-      />
+      <div className="footer-layout">
+        <Footer
+          dataList={dataList}
+          setDataList={setDataList}
+          deletedRowList={deletedRowList}
+          setOriginalDataList={setOriginalDataList}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          paginatedData={dataList}
+          totalItems={totalItems}
+          setTotalItems={setTotalItems}
+          itemsPerPage={itemsPerPage}
+        />
+      </div>
     </div>
   );
 };

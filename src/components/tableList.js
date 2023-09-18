@@ -6,9 +6,11 @@ import { useState } from "react";
 
 const TableList = ({
   tableData,
-  handleEditRow,
-  handleSaveRow,
-  handleDeletedRow,
+  dataList,
+  setDataList,
+  setOriginalDataList,
+  setCurrentPage,
+  setTotalItems,
   deleteRowsList,
   setDeletedRows,
 }) => {
@@ -64,7 +66,19 @@ const TableList = ({
               className="edit-cursor"
               onClick={(e) => {
                 setShowEditButton(false);
-                handleEditRow(e);
+                // handleEditRow(e);
+                let tableElement = document.querySelector(
+                  `#table-${e.target.id}`
+                );
+                if (tableElement !== null) {
+                  let name = tableElement.children[1].innerHTML;
+                  let email = tableElement.children[2].innerHTML;
+                  let role = tableElement.children[3].innerHTML;
+
+                  tableElement.children[1].innerHTML = `<input type="text" id="name_text" value="${name}">`;
+                  tableElement.children[2].innerHTML = `<input type="text" id="email_text" value="${email}">`;
+                  tableElement.children[3].innerHTML = `<input type="text" id="role_text" value="${role}">`;
+                }
               }}
             />
           )}
@@ -73,7 +87,35 @@ const TableList = ({
               id={tableData.id}
               className="set-cursor"
               onClick={(e) => {
-                handleSaveRow(e);
+                // handleSaveRow(e);
+                let new_name = document.getElementById(`name_text`).value;
+                let new_email = document.getElementById(`email_text`).value;
+                let new_role = document.getElementById(`role_text`).value;
+
+                document.getElementById(`name-${e.target.id}`).innerHTML =
+                  new_name;
+                document.getElementById(`email-${e.target.id}`).innerHTML =
+                  new_email;
+                document.getElementById(`role-${e.target.id}`).innerHTML =
+                  new_role;
+
+                let newList = [];
+                dataList.forEach((obj) => {
+                  if (obj.id === e.target.id) {
+                    newList.push({
+                      id: e.target.id,
+                      name: new_name,
+                      email: new_email,
+                      role: new_role,
+                    });
+                  } else {
+                    newList.push(obj);
+                  }
+                });
+                setDataList(newList);
+                setCurrentPage(1);
+                setOriginalDataList(newList);
+                setTotalItems(newList.length);
                 setShowEditButton(true);
               }}
             />
@@ -81,7 +123,18 @@ const TableList = ({
           <DeleteOutlinedIcon
             id={tableData.id}
             className="delete-icon"
-            onClick={handleDeletedRow}
+            onClick={(e) => {
+              let newList = [];
+              dataList.forEach((obj) => {
+                if (obj.id !== e.target.id) {
+                  newList.push(obj);
+                }
+              });
+              setDataList(newList);
+              setCurrentPage(1);
+              setOriginalDataList(newList);
+              setTotalItems(newList.length);
+            }}
           />
         </div>
       </td>

@@ -1,10 +1,15 @@
 import "./footer.css";
 
 const Footer = ({
-  handleDeletedClick,
+  // handleDeletedClick,
+  dataList,
+  setDataList,
+  deletedRowList,
+  setOriginalDataList,
   currentPage,
   setCurrentPage,
   totalItems,
+  setTotalItems,
   itemsPerPage,
 }) => {
   const showButtons = (totalItems, itemsPerPage) => {
@@ -17,12 +22,27 @@ const Footer = ({
   };
 
   return (
-    <div className="footer-layout">
+    <>
       <div className="delete-button-layout">
         <button
           type="button"
           className="delete-button"
-          onClick={handleDeletedClick}
+          onClick={() => {
+            let newList = [];
+            dataList.forEach((obj) => {
+              if (!deletedRowList.includes(obj.id)) {
+                newList.push(obj);
+              }
+            });
+
+            if (document.querySelector(`#checkbox-0`).checked)
+              document.querySelector(`#checkbox-0`).checked = false;
+
+            setDataList(newList);
+            setCurrentPage(1);
+            setOriginalDataList(newList);
+            setTotalItems(newList.length);
+          }}
         >
           Delete selected
         </button>
@@ -85,7 +105,7 @@ const Footer = ({
           Last
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
