@@ -35,6 +35,11 @@
   color: white;
 }
 
+.active {
+  background-color: white;
+  color: black;
+}
+
 @media (max-width: 576px) {
   .delete-button-layout {
     justify-content: center;

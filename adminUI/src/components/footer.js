@@ -1,7 +1,6 @@
 import "./footer.css";
 
 const Footer = ({
-  // handleDeletedClick,
   dataList,
   setDataList,
   deletedRowList,

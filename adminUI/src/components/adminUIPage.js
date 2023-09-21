@@ -54,9 +54,9 @@ const AdminPage = () => {
             setSearchVal(e.target.value);
             let searchFilter = originalDataList.map((obj) => {
               if (
-                obj.name.match(e.target.value) ||
-                obj.email.match(e.target.value) ||
-                obj.role.match(e.target.value)
+                obj.name.toLowerCase().match(e.target.value.toLowerCase()) ||
+                obj.email.toLowerCase().match(e.target.value.toLowerCase()) ||
+                obj.role.toLowerCase().match(e.target.value.toLowerCase())
               )
                 return obj;
 
